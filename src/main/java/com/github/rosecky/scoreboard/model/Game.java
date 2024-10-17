@@ -23,7 +23,22 @@ public class Game {
         return new Game(homeTeam, awayTeam, score);
     }
 
-    public void updateScore(Score newCurrentScore) {
+    public void updateScore(@NonNull Score newCurrentScore) {
         currentScore = newCurrentScore;
+    }
+
+    // For our purposes, games are identified only by home and away teams.
+    // This is a big simplification: in reality, the identity would be defined differently,
+    // at least to also incorporate the day/time on the match.
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Game other
+                && other.homeTeam.equals(this.homeTeam)
+                && other.awayTeam.equals(this.awayTeam);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(homeTeam, awayTeam);
     }
 }

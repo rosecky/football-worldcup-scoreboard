@@ -7,7 +7,4 @@ import lombok.NonNull;
 public class Team {
     @NonNull
     private final String name;
-    public static Team withName(String name) {
-        return new Team(name);
-    }
 }
