@@ -27,7 +27,8 @@ public class InMemoryScoreboard implements Scoreboard {
         if (!gamesInProgress.containsKey(key)) {
             throw new IllegalArgumentException("Game between %s and %s does not exist".formatted(homeTeam, awayTeam));
         }
-        var newGameState = GameState.withTeamsAndScore(homeTeam, awayTeam, newScore);
+        var oldGameState = gamesInProgress.get(key);
+        var newGameState = oldGameState.withNewScore(newScore);
         gamesInProgress.put(key, newGameState);
         return newGameState;
     }
@@ -48,7 +49,9 @@ public class InMemoryScoreboard implements Scoreboard {
         return gamesInProgress.values()
                 .stream()
                 .sorted(
-                        Comparator.comparing((GameState gameState) -> gameState.getScore().getTotal()).reversed()
+                        Comparator.comparing((GameState gameState) -> gameState.getScore().getTotal())
+                                .thenComparing(GameState::getStartedAt)
+                                .reversed()
                 ).toList();
     }
 }

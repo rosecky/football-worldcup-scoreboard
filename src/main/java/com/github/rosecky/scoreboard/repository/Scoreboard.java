@@ -4,11 +4,12 @@ import com.github.rosecky.scoreboard.model.GameState;
 import com.github.rosecky.scoreboard.model.Score;
 import com.github.rosecky.scoreboard.model.Team;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface Scoreboard {
-    default GameState startGameBetween(Team homeTeam, Team awayTeam) {
-        var game = GameState.initialWithTeams(homeTeam, awayTeam);
+    default GameState newGameBetween(Team homeTeam, Team awayTeam, LocalDateTime startedAt) {
+        var game = GameState.startedWithTeamsAt(homeTeam, awayTeam, startedAt);
         trackGameState(game);
         return game;
     }

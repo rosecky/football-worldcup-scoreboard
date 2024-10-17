@@ -5,6 +5,7 @@ import com.github.rosecky.scoreboard.model.Team;
 import com.github.rosecky.scoreboard.repository.Scoreboard;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -26,7 +27,7 @@ public class ScoreboardTest {
     @Test
     public void startingGameBetweenTheSameOpponentsThrows() {
         var scoreboard = scoreboardWithGamesAToE();
-        assertThatThrownBy(() -> scoreboard.startGameBetween(gameA().getHomeTeam(), gameA().getAwayTeam()))
+        assertThatThrownBy(() -> scoreboard.newGameBetween(gameA().getHomeTeam(), gameA().getAwayTeam(), LocalDateTime.now()))
                 .hasMessageContaining("already in progress");
     }
 
@@ -100,27 +101,27 @@ public class ScoreboardTest {
         return scoreboard;
     }
 
-    private GameState game(String homeTeamName, String awayTeamName, int homeTeamPoints, int awayTeamPoints) {
-        return GameState.withTeamsAndScore(new Team(homeTeamName), new Team(awayTeamName), new Score(homeTeamPoints, awayTeamPoints));
+    private GameState game(String homeTeamName, String awayTeamName, int homeTeamPoints, int awayTeamPoints, LocalDateTime startedAt) {
+        return GameState.startedWithTeamsAtTimeAndWithScore(new Team(homeTeamName), new Team(awayTeamName), startedAt, new Score(homeTeamPoints, awayTeamPoints));
     }
 
     private GameState gameA() {
-        return game("Mexico", "Canada", 0, 5);
+        return game("Mexico", "Canada", 0, 5, LocalDateTime.parse("2024-10-17T10:00"));
     }
 
     private GameState gameB() {
-        return game("Spain", "Brazil", 10, 2);
+        return game("Spain", "Brazil", 10, 2, LocalDateTime.parse("2024-10-17T11:00"));
     }
 
     private GameState gameC() {
-        return game("Germany", "France", 2, 2);
+        return game("Germany", "France", 2, 2, LocalDateTime.parse("2024-10-17T12:00"));
     }
 
     private GameState gameD() {
-        return game("Uruguay", "Italy", 6, 6);
+        return game("Uruguay", "Italy", 6, 6, LocalDateTime.parse("2024-10-17T13:00"));
     }
 
     private GameState gameE() {
-        return game("Argentina", "Australia", 3, 1);
+        return game("Argentina", "Australia", 3, 1, LocalDateTime.parse("2024-10-17T14:00"));
     }
 }
