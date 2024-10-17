@@ -12,6 +12,9 @@ public class InMemoryScoreboard implements Scoreboard {
 
     // map of tuples <home team, away team> to their current game state
     private final Map<ImmutablePair<Team, Team>, GameState> gamesInProgress = new HashMap<>();
+    private final SortedSet<GameState> sortedGamesCachedForSummary = new TreeSet<>(Comparator.comparing((GameState gameState) -> gameState.getScore().getTotal())
+            .thenComparing(GameState::getStartedAt)
+            .reversed());
 
     @Override
     public void trackGameState(GameState gameState) {
@@ -20,6 +23,7 @@ public class InMemoryScoreboard implements Scoreboard {
             throw new IllegalArgumentException("Game between %s and %s already in progress".formatted(gameState.getHomeTeam(), gameState.getAwayTeam()));
         }
         gamesInProgress.put(key, gameState);
+        sortedGamesCachedForSummary.add(gameState);
     }
 
     @Override
@@ -29,6 +33,8 @@ public class InMemoryScoreboard implements Scoreboard {
                 .orElseThrow(() -> new IllegalArgumentException("Game between %s and %s does not exist".formatted(homeTeam, awayTeam)));
         var newGameState = oldGameState.withNewScore(newScore);
         gamesInProgress.put(key, newGameState);
+        sortedGamesCachedForSummary.remove(oldGameState);
+        sortedGamesCachedForSummary.add(newGameState);
         return newGameState;
     }
 
@@ -38,17 +44,12 @@ public class InMemoryScoreboard implements Scoreboard {
         var gameState = Optional.ofNullable(gamesInProgress.get(key))
                 .orElseThrow(() -> new IllegalArgumentException("Game between %s and %s does not exist".formatted(homeTeam, awayTeam)));
         gamesInProgress.remove(key);
+        sortedGamesCachedForSummary.remove(gameState);
         return gameState;
     }
 
     @Override
     public List<GameState> getSummaryOfGamesInProgress() {
-        return gamesInProgress.values()
-                .stream()
-                .sorted(
-                        Comparator.comparing((GameState gameState) -> gameState.getScore().getTotal())
-                                .thenComparing(GameState::getStartedAt)
-                                .reversed()
-                ).toList();
+        return List.copyOf(sortedGamesCachedForSummary);
     }
 }
