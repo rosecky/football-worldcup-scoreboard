@@ -7,6 +7,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class GameTest {
+
+    @Test
+    public void updatedGameHasUpdatedScore() {
+        var game = Game.withTeams(new Team("HH"), new Team("AW"));
+        assertThat(game.getCurrentScore())
+                .has(TestUtils.score(0, 0));
+    }
+
     @Test
     public void nullTeamsThrow() {
         assertThatThrownBy(() -> Game.withTeams(null, new Team("team")))
@@ -30,7 +38,7 @@ public class GameTest {
                 .hasMessageContaining("null")
                 .hasMessageContaining("Score");
     }
-    
+
     @Test
     public void gamesAreIdentifiedSolelyByTeams() {
         var game1 = Game.withTeams(new Team("HH"), new Team("AW"));

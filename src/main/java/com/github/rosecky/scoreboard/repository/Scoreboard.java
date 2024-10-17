@@ -3,7 +3,7 @@ package com.github.rosecky.scoreboard.repository;
 import com.github.rosecky.scoreboard.model.Game;
 import com.github.rosecky.scoreboard.model.Team;
 
-import java.util.SortedSet;
+import java.util.List;
 
 public interface Scoreboard {
     default Game startGame(Team homeTeam, Team awayTeam) {
@@ -13,5 +13,5 @@ public interface Scoreboard {
     }
     void addGame(Game game);
     void finishGame(Game game);
-    SortedSet<Game> getSummaryOfGamesInProgress();
+    List<Game> getSummaryOfGamesInProgress();
 }

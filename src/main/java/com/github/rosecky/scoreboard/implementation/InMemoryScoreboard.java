@@ -4,7 +4,7 @@ import com.github.rosecky.scoreboard.model.Game;
 import com.github.rosecky.scoreboard.model.Team;
 import com.github.rosecky.scoreboard.repository.Scoreboard;
 
-import java.util.SortedSet;
+import java.util.List;
 
 public class InMemoryScoreboard implements Scoreboard {
 
@@ -25,7 +25,7 @@ public class InMemoryScoreboard implements Scoreboard {
     }
 
     @Override
-    public SortedSet<Game> getSummaryOfGamesInProgress() {
+    public List<Game> getSummaryOfGamesInProgress() {
         return null;
     }
 }
