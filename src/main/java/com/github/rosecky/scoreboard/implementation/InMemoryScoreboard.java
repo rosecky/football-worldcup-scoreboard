@@ -1,6 +1,7 @@
 package com.github.rosecky.scoreboard.implementation;
 
-import com.github.rosecky.scoreboard.model.Game;
+import com.github.rosecky.scoreboard.model.GameState;
+import com.github.rosecky.scoreboard.model.Score;
 import com.github.rosecky.scoreboard.model.Team;
 import com.github.rosecky.scoreboard.repository.Scoreboard;
 
@@ -9,23 +10,24 @@ import java.util.List;
 public class InMemoryScoreboard implements Scoreboard {
 
 
+
     @Override
-    public Game startGame(Team homeTeam, Team awayTeam) {
+    public void trackGameState(GameState gameState) {
+
+    }
+
+    @Override
+    public GameState updateScore(Team homeTeam, Team awayTeam, Score newScore) {
         return null;
     }
 
     @Override
-    public void addGame(Game game) {
-
+    public GameState finishGameBetween(Team homeTeam, Team awayTeam) {
+        return null;
     }
 
     @Override
-    public void finishGame(Game game) {
-
-    }
-
-    @Override
-    public List<Game> getSummaryOfGamesInProgress() {
+    public List<GameState> getSummaryOfGamesInProgress() {
         return null;
     }
 }
