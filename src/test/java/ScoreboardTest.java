@@ -102,7 +102,7 @@ public class ScoreboardTest {
     }
 
     private GameState game(String homeTeamName, String awayTeamName, int homeTeamPoints, int awayTeamPoints, LocalDateTime startedAt) {
-        return GameState.startedWithTeamsAtTimeAndWithScore(new Team(homeTeamName), new Team(awayTeamName), startedAt, new Score(homeTeamPoints, awayTeamPoints));
+        return GameState.startedWithTeamsAtTimeNowWithScore(new Team(homeTeamName), new Team(awayTeamName), startedAt, new Score(homeTeamPoints, awayTeamPoints));
     }
 
     private GameState gameA() {

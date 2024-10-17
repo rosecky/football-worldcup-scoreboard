@@ -29,7 +29,7 @@ public class GameStateTest {
 
     @Test
     public void nullScoresThrow() {
-        assertThatThrownBy(() -> GameState.startedWithTeamsAtTimeAndWithScore(new Team("homes"), new Team("aways"), LocalDateTime.now(), null))
+        assertThatThrownBy(() -> GameState.startedWithTeamsAtTimeNowWithScore(new Team("homes"), new Team("aways"), LocalDateTime.now(), null))
                 .hasMessageContaining("null")
                 .hasMessageContaining("score");
     }

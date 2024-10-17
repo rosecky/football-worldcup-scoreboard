@@ -19,15 +19,14 @@ public class GameState {
     public static GameState startedNowWithTeams(Team homeTeam, Team awayTeam) {
         return startedWithTeamsAt(homeTeam, awayTeam, LocalDateTime.now());
     }
-
     public static GameState startedWithTeamsAt(Team homeTeam, Team awayTeam, LocalDateTime gameStartedAt) {
-        return startedWithTeamsAtTimeAndWithScore(homeTeam, awayTeam, gameStartedAt, Score.initial());
+        return startedWithTeamsAtTimeNowWithScore(homeTeam, awayTeam, gameStartedAt, Score.initial());
     }
-    public static GameState startedWithTeamsAtTimeAndWithScore(Team homeTeam, Team awayTeam, LocalDateTime gameStartedAt, Score score) {
+    public static GameState startedWithTeamsAtTimeNowWithScore(Team homeTeam, Team awayTeam, LocalDateTime gameStartedAt, Score score) {
         return new GameState(homeTeam, awayTeam, score, gameStartedAt);
     }
 
     public GameState withNewScore(Score newScore) {
-        return startedWithTeamsAtTimeAndWithScore(homeTeam, awayTeam, startedAt, newScore);
+        return startedWithTeamsAtTimeNowWithScore(homeTeam, awayTeam, startedAt, newScore);
     }
 }
