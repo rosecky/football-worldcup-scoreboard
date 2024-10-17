@@ -10,6 +10,7 @@ import java.util.*;
 
 public class InMemoryScoreboard implements Scoreboard {
 
+    // map of tuples <home team, away team> to their current game state
     private final Map<ImmutablePair<Team, Team>, GameState> gamesInProgress = new HashMap<>();
 
     @Override
@@ -24,10 +25,8 @@ public class InMemoryScoreboard implements Scoreboard {
     @Override
     public GameState updateScore(Team homeTeam, Team awayTeam, Score newScore) {
         var key = new ImmutablePair<>(homeTeam, awayTeam);
-        if (!gamesInProgress.containsKey(key)) {
-            throw new IllegalArgumentException("Game between %s and %s does not exist".formatted(homeTeam, awayTeam));
-        }
-        var oldGameState = gamesInProgress.get(key);
+        var oldGameState = Optional.ofNullable(gamesInProgress.get(key))
+                .orElseThrow(() -> new IllegalArgumentException("Game between %s and %s does not exist".formatted(homeTeam, awayTeam)));
         var newGameState = oldGameState.withNewScore(newScore);
         gamesInProgress.put(key, newGameState);
         return newGameState;
@@ -36,10 +35,8 @@ public class InMemoryScoreboard implements Scoreboard {
     @Override
     public GameState finishGameBetween(Team homeTeam, Team awayTeam) {
         var key = new ImmutablePair<>(homeTeam, awayTeam);
-        if (!gamesInProgress.containsKey(key)) {
-            throw new IllegalArgumentException("Game between %s and %s does not exist".formatted(homeTeam, awayTeam));
-        }
-        var gameState = gamesInProgress.get(key);
+        var gameState = Optional.ofNullable(gamesInProgress.get(key))
+                .orElseThrow(() -> new IllegalArgumentException("Game between %s and %s does not exist".formatted(homeTeam, awayTeam)));
         gamesInProgress.remove(key);
         return gameState;
     }
